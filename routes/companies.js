@@ -5,7 +5,6 @@ const express = require("express");
 const router = new express.Router();
 const ExpressError = require("../expressError")
 const db = require("../db")
-const companies = []
 
 // at localhost:3000/companies
 router.get("/", async function (req, res, next) {
@@ -30,9 +29,7 @@ router.get("/:code", async function (req, res, next) {
             WHERE code = $1`, [req.params.code]);
 
     if (results.rows.length === 0) {
-        let notFoundError = new Error(`There is no compnay with code '${req.params.code}`);
-        notFoundError.status = 404;
-        throw notFoundError;
+        throw new ExpressError(`There is no company with code of '${req.params.code}`, 404);
       }
       return res.json({ company: results.rows[0] });
     } catch (err) {
