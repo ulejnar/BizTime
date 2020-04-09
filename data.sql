@@ -11,11 +11,13 @@ CREATE TABLE companies (
 
 CREATE TABLE invoices (
     id serial PRIMARY KEY,
+    -- "company code"
     comp_code text NOT NULL REFERENCES companies ON DELETE CASCADE,
     amt float NOT NULL,
     paid boolean DEFAULT false NOT NULL,
     add_date date DEFAULT CURRENT_DATE NOT NULL,
     paid_date date,
+    -- ensures all values not negative and have two decimal places
     CONSTRAINT invoices_amt_check CHECK ((amt > (0)::double precision))
 );
 
